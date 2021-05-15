@@ -1,0 +1,75 @@
+installing jenkins
+->sudo su
+->yum install java-1.8* -y
+->su -
+->find / -name java (selet java bin)
+->vi .bash_profile (JAVA_HOME=/user,PATH=$PATH:$JAVA_HOME)
+->java -version
+->source ~/.bash_profile
+->echo $JAVA_HOME (or)echo $PATH
+->sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+->sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+->yum install jenkins -y (open port 8080)
+->systemctl enable jenkins
+->systemctl start jenkins
+->systemctl status jenkins (after you go browser ip:8080)
+->yum install git -y
+->cat /var/lib/jenkins/secrets/initialAdminPassword
+->cd /opt
+-> go google https://maven.apache.org/download.cgi
+->Binary tar.gz archive only download
+->wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
+->tar -zxvf apache-maven-3.8.1-bin.tar.gz
+->cd apache-maven-3.8.1/bin
+->pwd (copy the address)(putting vi .bash_profile)
+M2_HOME=/opt/apache-maven-3.8.1/
+M2=$M2_HOME/bin
+PATH=$PATH:$JAVA_HOME:$M2_HOME:$M2:$HOME/bin
+
+->source ~/.bash_profile
+->echo $M2
+->manage jenkins->global toolconfiguration (add JDK &maven)
+->find / -name javac (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64)
+->find / -name mvn (/opt/apache-maven-3.8.1)
+
+
+       tomcat configuration
+->sudo su 
+->yum install java-1.8* -y
+->find / -name java
+->vi .bash_profile
+->cd /opt
+->wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.46/bin/apache-tomcat-9.0.46.tar.gz
+->ls
+->tar -zxvf apache
+->cd apache/bin
+->ps -ef |grep tomcat
+->ls -ltr
+->chmod +x startup.sh
+->chmod +x shudown.sh
+->pwd
+->echo $PATH
+->ln -s /opt/apache-tomcat-9.1.31/bin/startup.sh /usr/local/bin/tomcatup
+->ln -s /opt/apache-tomcat-9.1.31/bin/shudown.sh /usr/local/bin/tomcatdown
+->tomcatup
+->cd ../conf
+->vi server.xml (CHANGE your defaltport8080 to 8090)
+->tomcatdown
+->ps -ef |grep tomcat
+->tomcatup
+->find / -name context.xml
+->vi host-manger/context.xml (<!--    -->)
+->vi manger/context.xml (<!--    -->)
+->ls
+->vi tomcat-user.xml
+ <role rolename="manager-gui"/>
+  <role rolename="manager-script"/>
+  <role rolename="manager-jmx"/>
+  <role rolename="manager-status"/>
+  <user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+->tomcatup
+->manage jenkins->manage credentials->jenkins->global credentials->side->add credentials->tomcat_creidentals
+
+->
+
+
